@@ -1,10 +1,13 @@
-'use server'
+"use server";
 
 import prisma from "@/app/lib/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
 
-export async function registerInvestor(data: Record<string, string>, userId: string) {
+export async function registerInvestor(
+  data: Record<string, string>,
+  userId: string
+) {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
@@ -23,22 +26,32 @@ export async function registerInvestor(data: Record<string, string>, userId: str
         linkedInLink: data.linkedInOrWebsite,
         industry: data.expertise,
         taxNumber: data.taxId,
-        entity: data.legalEntityStatus
+        entity: data.legalEntityStatus,
       },
-      
     });
-    console.log('Investor registered:', investor);
+    console.log("Investor registered:", investor);
 
-    return { success: true, message: 'Investor registered successfully' };
+    return { success: true, message: "Investor registered successfully" };
   } catch (error) {
     console.log(error);
     throw error;
   }
 }
 
-
 export async function submitInvestorOptions(data: Record<string, string>) {
-  const { option, investmentAmount, projectType, projectBudget, projectDetails, projectDeadline, userId } = data;
+  const {
+    option,
+    investmentAmount,
+    projectType,
+    projectBudget,
+    projectDetails,
+    projectDeadline,
+    userId,
+  } = data;
+
+  console.log("userData latest");
+  console.log(data);
+  console.log("option : " + data.option);
 
   if (!userId) {
     throw new Error("User ID is required.");
@@ -67,7 +80,7 @@ export async function submitInvestorOptions(data: Record<string, string>) {
       const hiringOption = await prisma.hiringOption.create({
         data: {
           title: projectType,
-          price: parseInt(projectBudget, 10), // Ensure the price is stored as an integer
+          price: parseInt(projectBudget, 10),
           description: projectDetails,
           deadline: projectDeadline,
           Investor: {
@@ -75,6 +88,7 @@ export async function submitInvestorOptions(data: Record<string, string>) {
               id: userId,
             },
           },
+          // investorId: userId,
         },
       });
       return {
@@ -90,7 +104,3 @@ export async function submitInvestorOptions(data: Record<string, string>) {
     throw new Error("Failed to submit investor options.");
   }
 }
-
-
-
-

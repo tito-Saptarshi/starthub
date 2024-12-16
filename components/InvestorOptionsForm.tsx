@@ -33,32 +33,43 @@ export default function InvestorOptionsForm({userId} : {userId: string}) {
   //   }
   // }
 
-  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setIsSubmitting(true);
+   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+     event.preventDefault()
+     setIsSubmitting(true)
+ 
+     const formData = new FormData(event.currentTarget)
+     // const data = Object.fromEntries(formData.entries())
+     const data: Record<string, string> = {};
+ 
+     formData.forEach((value, key) => {
+       // Ensure only strings are added to the data object
+       if (typeof value === 'string') {
+         data[key] = value;
+       } else {
+         data[key] = ''; // Handle files or other non-string values if necessary
+       }
+     });
+ 
+     try {
+      if (data.projectDeadline) {
+        data.projectDeadline = new Date(data.projectDeadline as string).toISOString(); // Convert to DateTime
+      }
+       await submitInvestorOptions(data)
+       router.push('/') // Redirect to the new options page
+     } catch (error) {
+       console.error('Registration failed:', error)
+       // Handle error (e.g., show error message to user)
+     } finally {
+       setIsSubmitting(false)
+     }
+   }
   
-    const formData = new FormData(event.currentTarget);
-    
-    // Convert FormData entries to a Record<string, string>
-    const data = Object.fromEntries(
-      Array.from(formData.entries()).map(([key, value]) => [key, String(value)])
-    ) as Record<string, string>;
-  
-    try {
-      await submitInvestorOptions(data);
-      router.push('/'); // Redirect to a thank you page
-    } catch (error) {
-      console.error('Submission failed:', error);
-      // Handle error (e.g., show error message to user)
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
   
 
   return (
     <form onSubmit={onSubmit} className="space-y-8">
-       <input type="hidden" name="userId" value={userId} />
+       <input type="hidden" name="userId" value={userId ?? "hello"} />
+       <input type="hidden" name="option" value={option || ""} />
       <RadioGroup onValueChange={(value) => setOption(value as 'invest' | 'hire')} className="space-y-4">
         <div className="flex items-center space-x-2">
           <RadioGroupItem value="invest" id="invest" />
@@ -89,11 +100,11 @@ export default function InvestorOptionsForm({userId} : {userId: string}) {
           </div>
           <div>
             <label htmlFor="projectDetails" className="block text-sm font-medium text-gray-700">Project details</label>
-            <Textarea id="projectDetails" name="projectDetails" placeholder="Enter project details" className="mt-1" required />
+            <Textarea id="projectDetails"  name="projectDetails" placeholder="Enter project details" className="mt-1" required />
           </div>
           <div>
             <label htmlFor="projectDeadline" className="block text-sm font-medium text-gray-700">Project deadline</label>
-            <Input id="projectDeadline" name="projectDeadline" type="date" className="mt-1" required />
+            <Input id="projectDeadline" name="projectDeadline" type="date" className="mt-1" />
           </div>
         </>
       )}

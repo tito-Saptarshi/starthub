@@ -36,9 +36,9 @@ model Investor {
   taxNumber    String?
   entity       String?
 
-  Investment Investment?
+  investment Investment?
 
-  hiringOptions HiringOption[]
+  hiringOption HiringOption[]
 }
 
 model Investment {
@@ -56,6 +56,7 @@ model HiringOption {
   price       Int
   description String?
   deadline    DateTime?
+  
   Investor    Investor? @relation(fields: [investorId], references: [id])
   investorId  String?
 }
