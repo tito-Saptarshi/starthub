@@ -2,6 +2,7 @@
 
 import prisma from "@/app/lib/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { Prisma } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 export async function registerInvestor(
@@ -102,5 +103,52 @@ export async function submitInvestorOptions(data: Record<string, string>) {
   } catch (error) {
     console.error("Error submitting investor options:", error);
     throw new Error("Failed to submit investor options.");
+  }
+}
+
+export async function updateUserInfo(prevState: unknown, formData: FormData) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+  const firstname = formData.get("firstname") as string;
+  const lastname = formData.get("lastname") as string;
+  // const bio = formData.get("bio") as string;
+  const imageUrl = formData.get("imageUrl") as string;
+  const pitch = formData.get("pitch") as string;
+  const linkedInLink = formData.get("linkedInLink") as string;
+  
+  console.log("pitch " + pitch);
+  
+  try {
+    await prisma.innovator.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        firstName: firstname,
+        lastName: lastname,
+        bio: pitch,
+        imageUrl: imageUrl,
+        linkedInLink: linkedInLink,
+      },
+    });
+
+    return {
+      message: "Succesfully Updated",
+      status: "green",
+    };
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      if (e.code === "P2002") {
+        return {
+          message: "This username is already used",
+          status: "error",
+        };
+      }
+    }
+    throw e;
   }
 }

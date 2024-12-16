@@ -14,12 +14,29 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model Innovator {
+model User {
   id        String  @id
   email     String
   firstName String
   lastName  String
   imageUrl  String?
+
+  isInnovator Boolean @default(false)
+  isInvestor  Boolean @default(false)
+
+  Innovator Innovator?
+  Investor  Investor?
+}
+
+model Innovator {
+  id           String  @id
+  email        String
+  firstName    String
+  lastName     String
+  imageUrl     String?
+  bio          String?
+  linkedInLink String?
+  user         User    @relation(fields: [id], references: [id])
 }
 
 model Investor {
@@ -35,6 +52,8 @@ model Investor {
   industry     String?
   taxNumber    String?
   entity       String?
+
+  user User @relation(fields: [id], references: [id])
 
   investment Investment?
 
@@ -56,7 +75,7 @@ model HiringOption {
   price       Int
   description String?
   deadline    DateTime?
-  
-  Investor    Investor? @relation(fields: [investorId], references: [id])
-  investorId  String?
+
+  Investor   Investor? @relation(fields: [investorId], references: [id])
+  investorId String?
 }

@@ -53,7 +53,7 @@ export default function Hero({ loggedIn }: Props) {
                 size="lg"
                 className="bg-blue-500 text-white hover:bg-blue-600 text-lg px-8 py-6"
                 onClick={() => handleRoleSelection("investor")}
-                asChild
+                
               >
                 <LoginLink>Join as Investor</LoginLink>
               </Button>
@@ -62,7 +62,7 @@ export default function Hero({ loggedIn }: Props) {
                 size="lg"
                 className="border-2 border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white text-lg px-8 py-6"
                 onClick={() => handleRoleSelection("innovator")}
-                asChild
+                
               >
                 <LoginLink>Showcase Your Innovation</LoginLink>
               </Button>

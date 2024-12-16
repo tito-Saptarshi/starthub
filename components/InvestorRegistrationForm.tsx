@@ -48,7 +48,7 @@ export default function InvestorRegistrationForm({userId} : {userId : string} ) 
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-8">
+    <form onSubmit={onSubmit} className="space-y-8 p-10">
       <input type="hidden" value={userId}/>
       <div>
         <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>

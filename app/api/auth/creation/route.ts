@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
   if (!user || user === null || !user.id)
     throw new Error("Something went wrong. Please try again.");
 
-  const role = req.headers.get("x-user-role") || "investor"; // Default to "investor" if no role is set.
+  const role = req.headers.get("userRole") || "investor"; // Default to "investor" if no role is set.
 
   let dbUser;
   if (role === "investor") {
@@ -54,6 +54,6 @@ export async function GET(req: NextRequest) {
   return NextResponse.redirect(
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000/"
-      : "https://social-sphere-olive.vercel.app/"
+      : "http://localhost:3000/"
   );
 }
