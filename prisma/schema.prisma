@@ -15,11 +15,10 @@ datasource db {
 }
 
 model User {
-  id        String  @id
-  email     String
-  firstName String
-  lastName  String
-  imageUrl  String?
+  id       String  @id
+  email    String
+  name     String
+  imageUrl String?
 
   isInnovator Boolean @default(false)
   isInvestor  Boolean @default(false)
@@ -30,21 +29,17 @@ model User {
 
 model Innovator {
   id           String  @id
-  email        String
-  firstName    String
-  lastName     String
-  imageUrl     String?
   bio          String?
   linkedInLink String?
-  user         User    @relation(fields: [id], references: [id])
+  role         String?
+
+  user User @relation(fields: [id], references: [id])
+
+  project Project[]
 }
 
 model Investor {
   id           String  @id
-  email        String
-  firstName    String
-  lastName     String
-  imageUrl     String?
   address      String?
   companyName  String?
   jobProfile   String?
@@ -78,4 +73,21 @@ model HiringOption {
 
   Investor   Investor? @relation(fields: [investorId], references: [id])
   investorId String?
+}
+
+model Project {
+  id           String  @id @default(uuid())
+  name         String
+  tools_used   String?
+  imageUrl     String?
+  progress     Int
+  details      String
+  project_type String  @default("other")
+  project_link String?
+  github_link  String?
+  price        Int?
+  sold         Boolean @default(false)
+
+  Innovator   Innovator? @relation(fields: [innovatorId], references: [id])
+  innovatorId String?
 }

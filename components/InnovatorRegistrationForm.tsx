@@ -24,7 +24,6 @@ export interface iAppProps {
   
   bio: string | undefined | null | "";
   firstName: string | undefined | null | "";
-  lastName: string | undefined | null | "";
   imageUrl:  string | undefined | null | "";
   linkedInLink : string | undefined | null | "";
   
@@ -35,7 +34,7 @@ const initialState = {
   status: "",
 };
 
-export function InnovatorRegistrationForm({ bio, imageUrl, firstName, lastName, linkedInLink }: iAppProps) {
+export function InnovatorRegistrationForm({ bio, imageUrl, firstName, linkedInLink }: iAppProps) {
   const [newImage, setNewImage] = useState<string>("");
   const [state, formAction] = useActionState(updateUserInfo, initialState);
   const [pitch, setPitch] = useState("");
@@ -107,7 +106,7 @@ export function InnovatorRegistrationForm({ bio, imageUrl, firstName, lastName, 
               )}
             </div> */}
             <div className="space-y-2">
-              <Label htmlFor="firstname">First Name</Label>
+              <Label htmlFor="firstname">Name</Label>
               <Input
                 id="firstname"
                 name="firstname"
@@ -117,17 +116,7 @@ export function InnovatorRegistrationForm({ bio, imageUrl, firstName, lastName, 
                 <p className="text-destructive mt-1">{state.message}</p>
               )}
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="lastname">Last Name</Label>
-              <Input
-                id="lastname"
-                name="lastname"
-                defaultValue={lastName ?? ""}
-              />
-              {state?.status === "error" && (
-                <p className="text-destructive mt-1">{state.message}</p>
-              )}
-            </div>
+            
             <div className="space-y-2" data-color-mode="light">
               <Label htmlFor="bio">Bio</Label>
               <MDEditor

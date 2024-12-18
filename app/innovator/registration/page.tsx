@@ -10,6 +10,8 @@ async function getData(userId: string) {
   const data = await prisma.innovator.findUnique({
     where: {
       id: userId,
+    } ,include: {
+      user: true, // Include the user relation
     },
   });
 
@@ -41,9 +43,8 @@ export default async function page() {
       <Separator className="mt-10 mb-2 " />
       <InnovatorRegistrationForm
         bio={user?.bio}
-        firstName={user?.firstName}
-        lastName={user?.lastName}
-        imageUrl={user?.imageUrl}
+        firstName={user?.user.name}
+        imageUrl={user?.user.imageUrl}
         linkedInLink={user?.linkedInLink}
       />
     </>

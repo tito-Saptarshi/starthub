@@ -113,31 +113,60 @@ export async function updateUserInfo(prevState: unknown, formData: FormData) {
   if (!user) {
     return redirect("/api/auth/login");
   }
+
   const firstname = formData.get("firstname") as string;
-  const lastname = formData.get("lastname") as string;
-  // const bio = formData.get("bio") as string;
   const imageUrl = formData.get("imageUrl") as string;
   const pitch = formData.get("pitch") as string;
   const linkedInLink = formData.get("linkedInLink") as string;
-  
+
   console.log("pitch " + pitch);
-  
+
   try {
-    await prisma.innovator.update({
-      where: {
-        id: user.id,
-      },
+    const dbUser = await prisma.user.findUnique({
+      where: { id: user.id },
+    });
+
+    if (!dbUser) {
+      throw new Error("User not found in the database.");
+    }
+
+    let innovator = await prisma.innovator.findUnique({
+      where: { id: user.id },
+    });
+
+    if (!innovator) {
+      innovator = await prisma.innovator.create({
+        data: {
+          bio: pitch,
+          linkedInLink: linkedInLink,
+          user: {
+            connect: {
+              id: user.id,
+            },
+          }, 
+        },
+      });
+    } else {
+      await prisma.innovator.update({
+        where: { id: user.id },
+        data: {
+          bio: pitch,
+          linkedInLink: linkedInLink,
+        },
+      });
+    }
+
+    await prisma.user.update({
+      where: { id: user.id },
       data: {
-        firstName: firstname,
-        lastName: lastname,
-        bio: pitch,
+        name: firstname,
         imageUrl: imageUrl,
-        linkedInLink: linkedInLink,
+        isInnovator: true,
       },
     });
 
     return {
-      message: "Succesfully Updated",
+      message: "Successfully Updated",
       status: "green",
     };
   } catch (e) {
@@ -149,6 +178,11 @@ export async function updateUserInfo(prevState: unknown, formData: FormData) {
         };
       }
     }
+    console.error(e);
     throw e;
   }
+}
+
+export async function createProject() {
+  
 }

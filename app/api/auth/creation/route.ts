@@ -10,50 +10,33 @@ export async function GET(req: NextRequest) {
   const user = await getUser();
 
   if (!user || user === null || !user.id)
-    throw new Error("Something went wrong. Please try again.");
+    throw new Error("something went wrong please try again");
 
-  const role = req.headers.get("userRole") || "investor"; // Default to "investor" if no role is set.
+  let dbUser = await prisma.user.findUnique({
+    where: {
+      id: user.id,
+    },
+  });
 
-  let dbUser;
-  if (role === "investor") {
-    dbUser = await prisma.investor.findUnique({
-      where: {
+  if (!dbUser) {
+    dbUser = await prisma.user.create({
+      data: {
         id: user.id,
+        email: user.email ?? "",
+        name: user.given_name + " " + user.family_name || "No Name",
+        imageUrl: user.picture,
       },
     });
-    if (!dbUser) {
-      dbUser = await prisma.investor.create({
-        data: {
-          id: user.id,
-          email: user.email ?? "",
-          firstName: user.given_name ?? "",
-          lastName: user.family_name ?? "",
-          imageUrl: user.picture,
-        },
-      });
-    }
-  } else if (role === "innovator") {
-    dbUser = await prisma.innovator.findUnique({
-      where: {
-        id: user.id,
-      },
-    });
-    if (!dbUser) {
-      dbUser = await prisma.innovator.create({
-        data: {
-          id: user.id,
-          email: user.email ?? "",
-          firstName: user.given_name ?? "",
-          lastName: user.family_name ?? "",
-          imageUrl: user.picture,
-        },
-      });
-    }
+    return NextResponse.redirect(
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:3000/onboarding"
+        : "https://your-production-domain.com/onboarding"
+    );
   }
 
   return NextResponse.redirect(
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000/"
-      : "http://localhost:3000/"
+      : "https://your-production-domain.com/onboarding"
   );
 }
