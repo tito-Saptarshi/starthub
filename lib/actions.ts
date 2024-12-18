@@ -143,7 +143,7 @@ export async function updateUserInfo(prevState: unknown, formData: FormData) {
             connect: {
               id: user.id,
             },
-          }, 
+          },
         },
       });
     } else {
@@ -183,6 +183,57 @@ export async function updateUserInfo(prevState: unknown, formData: FormData) {
   }
 }
 
-export async function createProject() {
-  
+export async function createProject(prevState: unknown, formData: FormData) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+
+  const name = formData.get("name") as string;
+  const tools = formData.get("tools") as string;
+  const imageUrl = formData.get("imageUrl") as string;
+  const progress = formData.get("progress") as string;
+  const pitch = formData.get("pitch") as string;
+  const option = formData.get("option") as string;
+  const collabDesc = formData.get("collabDesc") as string;
+  const projectLink = formData.get("projectLink") as string;
+  const githubLink = formData.get("githubLink") as string;
+  const investmentAmount = formData.get("investmentAmount") as string;
+
+  try {
+    await prisma.project.create({
+      data: {
+        name: name,
+        tools_used: tools,
+        imageUrl: imageUrl ?? undefined,
+        progress: parseInt(progress, 10),
+        details: pitch,
+        project_type: option,
+        collabDesc: collabDesc,
+        project_link: projectLink,
+        github_link: githubLink,
+        price: parseInt(investmentAmount, 10),
+        Innovator: {
+          connect: {
+            id: user.id, // Connect with the Innovator using the provided ID
+          },
+        },
+      },
+    });
+
+    return {
+      status: "success",
+      success: true,
+      message: "Project created successfully",
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      status: "error",
+      success: false,
+      message: "Failed to create project",
+    };
+  }
 }

@@ -21,12 +21,10 @@ import { updateUserInfo } from "@/lib/actions";
 import MDEditor from "@uiw/react-md-editor";
 import { SubmitButton } from "./SubmitButton";
 export interface iAppProps {
-  
   bio: string | undefined | null | "";
   firstName: string | undefined | null | "";
-  imageUrl:  string | undefined | null | "";
-  linkedInLink : string | undefined | null | "";
-  
+  imageUrl: string | undefined | null | "";
+  linkedInLink: string | undefined | null | "";
 }
 
 const initialState = {
@@ -34,7 +32,12 @@ const initialState = {
   status: "",
 };
 
-export function InnovatorRegistrationForm({ bio, imageUrl, firstName, linkedInLink }: iAppProps) {
+export function InnovatorRegistrationForm({
+  bio,
+  imageUrl,
+  firstName,
+  linkedInLink,
+}: iAppProps) {
   const [newImage, setNewImage] = useState<string>("");
   const [state, formAction] = useActionState(updateUserInfo, initialState);
   const [pitch, setPitch] = useState("");
@@ -116,11 +119,11 @@ export function InnovatorRegistrationForm({ bio, imageUrl, firstName, linkedInLi
                 <p className="text-destructive mt-1">{state.message}</p>
               )}
             </div>
-            
+
             <div className="space-y-2" data-color-mode="light">
               <Label htmlFor="bio">Bio</Label>
               <MDEditor
-               value={pitch ?? ""}
+                value={pitch ?? ""}
                 onChange={(value) => setPitch(value as string)}
                 id="pitch"
                 preview="edit"
@@ -136,12 +139,15 @@ export function InnovatorRegistrationForm({ bio, imageUrl, firstName, linkedInLi
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="linkedInLink">LinkedIn Profile or Website<span className="text-muted-foreground"> (Optional) </span></Label>
+              <Label htmlFor="linkedInLink">
+                LinkedIn Profile or Website
+                <span className="text-muted-foreground"> (Optional) </span>
+              </Label>
               <Input
                 id="linkedInLink"
                 name="linkedInLink"
                 defaultValue={linkedInLink ?? ""}
-                placeholder="e.g., Tech, Healthcare, Real Estate" 
+                placeholder="e.g., Tech, Healthcare, Real Estate"
               />
               {state?.status === "error" && (
                 <p className="text-destructive mt-1">{state.message}</p>
@@ -184,7 +190,6 @@ export function InnovatorRegistrationForm({ bio, imageUrl, firstName, linkedInLi
         </CardContent>
         <CardFooter className="flex justify-end">
           <SubmitButton text="Save" />
-          
         </CardFooter>
       </Card>
     </form>

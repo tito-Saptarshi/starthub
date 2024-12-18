@@ -57,3 +57,15 @@ export type Innovator = {
     investor?: Investor; 
     investorId?: string; 
   }
+
+  export interface ProjectData {
+    name: string
+    tools: string
+    imageUrl: string
+    progress: number
+    description: string
+    projectType: 'for-sale' | 'funding' | 'collaboration'
+    price?: number
+    projectLink: string
+    githubLink: string
+  }

@@ -85,8 +85,12 @@ model Project {
   project_type String  @default("other")
   project_link String?
   github_link  String?
+
   price        Int?
   sold         Boolean @default(false)
+
+  collabDesc String?
+  
 
   Innovator   Innovator? @relation(fields: [innovatorId], references: [id])
   innovatorId String?
