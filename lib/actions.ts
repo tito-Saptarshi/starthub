@@ -15,21 +15,49 @@ export async function registerInvestor(
   if (!user) {
     return redirect("/");
   }
+  let investor;
   try {
-    const investor = await prisma.investor.update({
+    const newData = await prisma.investor.findUnique({
       where: {
         id: userId,
       },
-      data: {
-        address: data.address,
-        companyName: data.companyName,
-        jobProfile: data.jobTitle,
-        linkedInLink: data.linkedInOrWebsite,
-        industry: data.expertise,
-        taxNumber: data.taxId,
-        entity: data.legalEntityStatus,
-      },
     });
+    if (!newData) {
+       investor = await prisma.investor.create({
+        data: {
+          address: data.address,
+          companyName: data.companyName,
+          jobProfile: data.jobTitle,
+          linkedInLink: data.linkedInOrWebsite,
+          industry: data.expertise,
+          taxNumber: data.taxId,
+          entity: data.legalEntityStatus,
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+      });
+    } else {
+
+       investor = await prisma.investor.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          address: data.address || "",
+          companyName: data.companyName || "",
+          jobProfile: data.jobTitle || "",
+          linkedInLink: data.linkedInOrWebsite || "",
+          industry: data.expertise || "",
+          taxNumber: data.taxId || "",
+          entity: data.legalEntityStatus || "Individual",
+          
+        },
+      });
+    }
+
     console.log("Investor registered:", investor);
 
     return { success: true, message: "Investor registered successfully" };
@@ -40,6 +68,8 @@ export async function registerInvestor(
 }
 
 export async function submitInvestorOptions(data: Record<string, string>) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
   const {
     option,
     investmentAmount,
@@ -61,16 +91,31 @@ export async function submitInvestorOptions(data: Record<string, string>) {
   try {
     if (option === "invest") {
       // Create an investment record
-      const investment = await prisma.investment.create({
-        data: {
-          value: parseInt(investmentAmount, 10), // Ensure the value is stored as an integer
-          Investor: {
-            connect: {
-              id: userId,
+
+      const data = await prisma.investment.findFirst();
+      let investment;
+      if(!data) {
+        investment = await prisma.investment.create({
+          data: {
+            value: parseInt(investmentAmount, 10), // Ensure the value is stored as an integer
+            Investor: {
+              connect: {
+                id: userId,
+              },
             },
           },
-        },
-      });
+        });
+      } else {
+        investment = await prisma.investment.update({
+          where: {
+            investorId: userId, // Use investorId as it is unique
+          },
+          data: {
+            value: parseInt(investmentAmount, 10),
+          },
+        })
+      }
+      
       return {
         success: true,
         message: "Investment created successfully",

@@ -1,6 +1,6 @@
 import prisma from "@/app/lib/db";
 import { HeroInnovator } from "@/components/innovatorComponents/HeroInnovator";
-
+import PersonalProjects from "@/components/innovatorComponents/PersonalProjects";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { unstable_noStore as noStore } from "next/cache";
 
@@ -31,6 +31,7 @@ export default async function page({params} : {params : {id : string}}) {
   <div className="p-4">
     <HeroInnovator user={user || ""} admin={admin}/>  
     {/* <PersonalProjects username={params.id}/> */}
+     <PersonalProjects userId={params.id}/>
   </div>
   );
 }
