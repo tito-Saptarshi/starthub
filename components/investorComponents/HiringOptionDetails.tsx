@@ -24,7 +24,7 @@ export default async function HiringOptionDetails({ hiringOption,investorId }: H
       )}
       <p className='mt-2'>Status: {hiringOption.accept ? ("Not available"):("available")}</p>
       {/* <Button className='mt-3' variant={'outline'}>Connect</Button> */}
-      {!hiringOption.accept && <ToastSimple investorId={investorId} innovatorId={user.id}/>}
+      {!hiringOption.accept && <ToastSimple investorId={investorId} innovatorId={user.id} projectId={hiringOption.id}/>}
     </div>
   )
 }

@@ -2,9 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { hiringConnectAction } from "@/lib/actions";
+import { hiringConnectConfirm } from "@/lib/actions";
 
-export function ToastSimple({ investorId,innovatorId, projectId }: { investorId: string; innovatorId: string; projectId: string }) {
+export function ToasterConfirm({ investorId,innovatorId, projectId }: { investorId: string; innovatorId: string; projectId: string }) {
   const { toast } = useToast();
 
   return (
@@ -12,19 +12,20 @@ export function ToastSimple({ investorId,innovatorId, projectId }: { investorId:
       variant="outline"
       className="mt-3"
       onClick={async () => {
-        const result = await hiringConnectAction(investorId, innovatorId, projectId);
+        const result = await hiringConnectConfirm(investorId, innovatorId, projectId);
         if (result.status === "success") {
           toast({
-            description: "Request Sent.",
+            description: "Innovator Hired",
           });
         } else {
           toast({
-            description: "Request couldn't be sent",
+            description: "Failure"
+            
           });
         }
       }}
     >
-      Connect
+      Confirm
     </Button>
   );
 }

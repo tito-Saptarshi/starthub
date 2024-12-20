@@ -102,5 +102,8 @@ model InnovatorHiring {
   id String @id @default(uuid())
   investorId String
   innovatorId String
+  projectId String
   accept Boolean @default(false)
+
+   @@unique([investorId, innovatorId, projectId])
 }

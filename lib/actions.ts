@@ -283,12 +283,40 @@ export async function createProject(prevState: unknown, formData: FormData) {
   }
 }
 
-export async function hiringConnectAction(investorId: string, innovatorId: string) {
+export async function hiringConnectAction(investorId: string, innovatorId: string, projectId: string) {
   try {
     await prisma.innovatorHiring.create({
       data : {
         investorId,
-        innovatorId
+        innovatorId,
+        projectId
+      }
+    })
+    return {status: "success"}
+  } catch (error) {
+    console.log(error);
+    return {status: "failure"}
+  }
+}
+
+export async function hiringConnectConfirm(investorId: string, innovatorId: string, projectId: string) {
+  try {
+    await prisma.innovatorHiring.update({
+      where: {
+        investorId_innovatorId_projectId: { 
+          investorId, 
+          innovatorId, 
+          projectId 
+        }
+      }, data : {
+        accept: true,
+      }
+    })
+    await prisma.hiringOption.update({
+      where : {
+        id: projectId,
+      }, data : {
+        accept: true,
       }
     })
     return {status: "success"}
