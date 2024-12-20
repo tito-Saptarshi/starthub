@@ -282,3 +282,18 @@ export async function createProject(prevState: unknown, formData: FormData) {
     };
   }
 }
+
+export async function hiringConnectAction(investorId: string, innovatorId: string) {
+  try {
+    await prisma.innovatorHiring.create({
+      data : {
+        investorId,
+        innovatorId
+      }
+    })
+    return {status: "success"}
+  } catch (error) {
+    console.log(error);
+    return {status: "failure"}
+  }
+}

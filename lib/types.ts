@@ -56,6 +56,7 @@ export type Innovator = {
     deadline?: Date; 
     investor?: Investor; 
     investorId?: string; 
+    accept: boolean;
   }
 
   export interface ProjectData {

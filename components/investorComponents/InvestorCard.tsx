@@ -11,7 +11,7 @@ export default function InvestorCard2({ investor }: InvestorCardProps) {
   }
 
   return (
-    <Link href={`/investors/${investor.id}`}>
+    <Link href={`/all-investor/${investor.id}`}>
       <div className="bg-white shadow-md rounded-lg p-6 transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105">
         <h2 className="text-xl font-semibold mb-2">{investor.companyName || 'Unnamed Company'}</h2>
         <p className="text-gray-600 mb-4">{investor.industry || 'Industry not specified'}</p>

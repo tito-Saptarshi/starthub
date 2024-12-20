@@ -70,6 +70,7 @@ model HiringOption {
   price       Int
   description String?
   deadline    DateTime?
+  accept Boolean @default(false)
 
   Investor   Investor? @relation(fields: [investorId], references: [id])
   investorId String?
@@ -94,4 +95,12 @@ model Project {
 
   Innovator   Innovator? @relation(fields: [innovatorId], references: [id])
   innovatorId String?
+}
+
+
+model InnovatorHiring {
+  id String @id @default(uuid())
+  investorId String
+  innovatorId String
+  accept Boolean @default(false)
 }

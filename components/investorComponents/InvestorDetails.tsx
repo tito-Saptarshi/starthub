@@ -53,7 +53,7 @@ export default function InvestorDetails({ investor }: InvestorDetailsProps) {
         <div>
           {investor.investment && (
             <div className="mb-8">
-              <h2 className="text-2xl font-semibold mb-4">Investment</h2>
+              <h2 className="text-2xl font-semibold mb-4">Investment budget</h2>
               <InvestmentDetails investment={investor.investment} />
             </div>
           )}
@@ -62,7 +62,7 @@ export default function InvestorDetails({ investor }: InvestorDetailsProps) {
             <div>
               <h2 className="text-2xl font-semibold mb-4">Hiring Options</h2>
               {investor.hiringOption.map((option) => (
-                <HiringOptionDetails key={option.id} hiringOption={option} />
+                <HiringOptionDetails key={option.id} hiringOption={option} investorId={option.investorId ?? ""}/>
               ))}
             </div>
           )}
