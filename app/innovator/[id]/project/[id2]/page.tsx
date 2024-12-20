@@ -8,6 +8,7 @@ import prisma from "@/app/lib/db";
 import { redirect } from "next/navigation";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import markdownit from "markdown-it";
+import { ToasterCollabCreate } from "@/components/innovatorComponents/ToasterCollabCreate";
 const md = markdownit();
 
 async function getData(projectId: string) {
@@ -30,21 +31,21 @@ async function getData(projectId: string) {
 }
 
 // This would typically come from an API or database
-const project = {
-  title: "AI-Powered Task Management",
-  creator: "Jane Doe",
-  image: "/placeholder.svg",
-  status: "funding", // 'sale', 'funding', or 'collaboration'
-  amount: 50000,
-  description:
-    "An intelligent task management system that uses AI to prioritize and suggest optimal task completion strategies.",
-  githubRepo: "https://github.com/janedoe/ai-task-manager",
-  hostedLink: "https://ai-task-manager.vercel.app",
-  progress: 75,
-  tools: ["Next.js", "TensorFlow.js", "PostgreSQL", "Vercel"],
-  collaborationRequirements:
-    "Full-stack developer with experience in AI/ML and modern web technologies.",
-};
+// const project = {
+//   title: "AI-Powered Task Management",
+//   creator: "Jane Doe",
+//   image: "/placeholder.svg",
+//   status: "funding", // 'sale', 'funding', or 'collaboration'
+//   amount: 50000,
+//   description:
+//     "An intelligent task management system that uses AI to prioritize and suggest optimal task completion strategies.",
+//   githubRepo: "https://github.com/janedoe/ai-task-manager",
+//   hostedLink: "https://ai-task-manager.vercel.app",
+//   progress: 75,
+//   tools: ["Next.js", "TensorFlow.js", "PostgreSQL", "Vercel"],
+//   collaborationRequirements:
+//     "Full-stack developer with experience in AI/ML and modern web technologies.",
+// };
 
 export default async function ProjectDisplay({
   params,
@@ -65,7 +66,7 @@ export default async function ProjectDisplay({
 
   return (
     <div className="container mx-auto px-4 py-8 lg:pl-24 lg:pt-10">
-      <h1 className="text-3xl font-bold mb-6">{project.title}</h1>
+      <h1 className="text-3xl font-bold mb-6">{projectData.name}</h1>
 
       <div className="grid md:grid-cols-2 gap-8">
         {projectData.imageUrl && (
@@ -85,30 +86,29 @@ export default async function ProjectDisplay({
             Created by: {projectData.Innovator?.user.name}
           </p>
 
-          {projectData.project_type === "sale" && (
+          {projectData.project_type === "sell" && (
             <div>
-              <Badge>For Sale</Badge>
+              <Badge>For Sell</Badge>
               <p className="text-2xl font-bold mt-2">
-                Price: ${project.amount}
+                Price: ${projectData.price}
               </p>
-              <BidDialog projectTitle={project.title} />
+              <BidDialog projectTitle={projectData.name} />
             </div>
           )}
 
-          {project.status === "funding" && (
+          {projectData.project_type === "fund" && (
             <div>
               <Badge>Seeking Funding</Badge>
               <p className="text-2xl font-bold mt-2">
-                Funding Goal: ${project.amount}
+                Funding Goal: ${projectData.price}
               </p>
-              <BidDialog projectTitle={project.title} />
+              <BidDialog projectTitle={projectData.name} />
             </div>
           )}
 
-          {project.status === "collaboration" && (
+          {projectData.project_type === "collab" && (
             <div>
-              <Badge>Seeking Collaboration</Badge>
-              <p className="mt-2">{project.collaborationRequirements}</p>
+              <ToasterCollabCreate projectId={projectData.id} admin={admin}/>
             </div>
           )}
 
@@ -123,11 +123,12 @@ export default async function ProjectDisplay({
           <div>
             <h2 className="text-xl font-semibold mb-2">Tools Used</h2>
             <div className="flex flex-wrap gap-2">
-              {project.tools.map((tool, index) => (
+              {/* {project.tools.map((tool, index) => (
                 <Badge key={index} variant="secondary">
                   {tool}
                 </Badge>
-              ))}
+              ))} */}
+              {projectData.tools_used}
             </div>
           </div>
 

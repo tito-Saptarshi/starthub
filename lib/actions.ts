@@ -23,7 +23,7 @@ export async function registerInvestor(
       },
     });
     if (!newData) {
-       investor = await prisma.investor.create({
+      investor = await prisma.investor.create({
         data: {
           address: data.address,
           companyName: data.companyName,
@@ -40,8 +40,7 @@ export async function registerInvestor(
         },
       });
     } else {
-
-       investor = await prisma.investor.update({
+      investor = await prisma.investor.update({
         where: {
           id: user.id,
         },
@@ -53,7 +52,6 @@ export async function registerInvestor(
           industry: data.expertise || "",
           taxNumber: data.taxId || "",
           entity: data.legalEntityStatus || "Individual",
-          
         },
       });
     }
@@ -94,7 +92,7 @@ export async function submitInvestorOptions(data: Record<string, string>) {
 
       const data = await prisma.investment.findFirst();
       let investment;
-      if(!data) {
+      if (!data) {
         investment = await prisma.investment.create({
           data: {
             value: parseInt(investmentAmount, 10), // Ensure the value is stored as an integer
@@ -113,9 +111,9 @@ export async function submitInvestorOptions(data: Record<string, string>) {
           data: {
             value: parseInt(investmentAmount, 10),
           },
-        })
+        });
       }
-      
+
       return {
         success: true,
         message: "Investment created successfully",
@@ -283,45 +281,77 @@ export async function createProject(prevState: unknown, formData: FormData) {
   }
 }
 
-export async function hiringConnectAction(investorId: string, innovatorId: string, projectId: string) {
+export async function hiringConnectAction(
+  investorId: string,
+  innovatorId: string,
+  projectId: string
+) {
   try {
     await prisma.innovatorHiring.create({
-      data : {
+      data: {
         investorId,
         innovatorId,
-        projectId
-      }
-    })
-    return {status: "success"}
+        projectId,
+      },
+    });
+    return { status: "success" };
   } catch (error) {
     console.log(error);
-    return {status: "failure"}
+    return { status: "failure" };
   }
 }
 
-export async function hiringConnectConfirm(investorId: string, innovatorId: string, projectId: string) {
+export async function hiringConnectConfirm(
+  investorId: string,
+  innovatorId: string,
+  projectId: string
+) {
   try {
     await prisma.innovatorHiring.update({
       where: {
-        investorId_innovatorId_projectId: { 
-          investorId, 
-          innovatorId, 
-          projectId 
-        }
-      }, data : {
+        investorId_innovatorId_projectId: {
+          investorId,
+          innovatorId,
+          projectId,
+        },
+      },
+      data: {
         accept: true,
-      }
-    })
+      },
+    });
     await prisma.hiringOption.update({
-      where : {
+      where: {
         id: projectId,
-      }, data : {
+      },
+      data: {
         accept: true,
-      }
-    })
-    return {status: "success"}
+      },
+    });
+    return { status: "success" };
   } catch (error) {
     console.log(error);
-    return {status: "failure"}
+    return { status: "failure" };
+  }
+}
+
+export async function collabProject(projectId: string) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+
+  try {
+    await prisma.collab.create({
+      data: {
+        innovatorId: user.id,
+        projectId: projectId,
+      },
+    });
+    return { status: "success" };
+  } catch (error) {
+    console.log(error);
+    return { status: "failure" };
   }
 }

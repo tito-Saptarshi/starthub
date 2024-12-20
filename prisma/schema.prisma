@@ -70,7 +70,7 @@ model HiringOption {
   price       Int
   description String?
   deadline    DateTime?
-  accept Boolean @default(false)
+  accept      Boolean   @default(false)
 
   Investor   Investor? @relation(fields: [investorId], references: [id])
   investorId String?
@@ -87,23 +87,30 @@ model Project {
   project_link String?
   github_link  String?
 
-  price        Int?
-  sold         Boolean @default(false)
+  price Int?
+  sold  Boolean @default(false)
 
   collabDesc String?
-  
 
   Innovator   Innovator? @relation(fields: [innovatorId], references: [id])
   innovatorId String?
 }
 
-
 model InnovatorHiring {
-  id String @id @default(uuid())
-  investorId String
+  id          String  @id @default(uuid())
+  investorId  String
   innovatorId String
-  projectId String
-  accept Boolean @default(false)
+  projectId   String
+  accept      Boolean @default(false)
 
-   @@unique([investorId, innovatorId, projectId])
+  @@unique([investorId, innovatorId, projectId])
+}
+
+model Collab {
+  id          String  @id @default(uuid())
+  projectId   String
+  innovatorId String
+  accept      Boolean @default(false)
+
+  @@unique([innovatorId, projectId])
 }
