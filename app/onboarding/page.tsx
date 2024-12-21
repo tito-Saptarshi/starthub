@@ -16,9 +16,9 @@ export default async function OnboardingPage() {
   const { getUser } = await  getKindeServerSession();
   const user = await getUser();
 
-  if(!user) return redirect('/');
+  // if(!user) return redirect('/');
 
-  const data = await getData(user.id);
+  const data = await getData(user?.id || "");
   const investor = data?.isInvestor;
   const innovator = data?.isInnovator;
   return (
