@@ -1,6 +1,7 @@
 //import prisma from "@/app/lib/db";
 import InvestorRegistrationForm from "@/components/InvestorRegistrationForm";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { redirect } from "next/navigation";
 // import { unstable_noStore as noStore } from "next/cache";
 // async function getData(userId: string) {
 //   noStore();
@@ -16,6 +17,7 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 export default async function InvestorRegistrationPage() {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
+  if(!user) redirect("/")
   // const userData = getData(user.id);
   return (
     <div className="container mx-auto px-4 py-8">
