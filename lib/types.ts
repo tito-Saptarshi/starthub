@@ -60,13 +60,18 @@ export type Innovator = {
   }
 
   export interface ProjectData {
-    name: string
-    tools: string
-    imageUrl: string
-    progress: number
-    description: string
-    projectType: 'for-sale' | 'funding' | 'collaboration'
-    price?: number
-    projectLink: string
-    githubLink: string
+    id: string;
+    name: string;
+    tools_used: string;
+    imageUrl: string;
+    progress: number;
+    details: string;
+    project_type: 'sell' | 'fund' | 'collab';
+    project_link: string;
+    github_link: string;
+    price?: number;
+    sold: boolean;
+    collabDesc?: string;
+
+    innovatorId? : string;
   }

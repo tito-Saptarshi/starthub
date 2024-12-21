@@ -1,6 +1,7 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import prisma from "../lib/db"
 import { redirect } from "next/navigation";
+import { ProjectList } from "@/components/innovatorComponents/ProjectList";
 
 async function getData(id:string) {
     return prisma.user.findUnique({

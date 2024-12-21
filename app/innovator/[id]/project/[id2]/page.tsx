@@ -92,7 +92,7 @@ export default async function ProjectDisplay({
               <p className="text-2xl font-bold mt-2">
                 Price: ${projectData.price}
               </p>
-              <BidDialog projectTitle={projectData.name} />
+              <BidDialog projectTitle={projectData.name} projectId={projectData.id} />
             </div>
           )}
 
@@ -102,7 +102,7 @@ export default async function ProjectDisplay({
               <p className="text-2xl font-bold mt-2">
                 Funding Goal: ${projectData.price}
               </p>
-              <BidDialog projectTitle={projectData.name} />
+              <BidDialog projectTitle={projectData.name} projectId={projectData.id}/>
             </div>
           )}
 

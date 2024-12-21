@@ -355,3 +355,87 @@ export async function collabProject(projectId: string) {
     return { status: "failure" };
   }
 }
+
+export async function placeBid(projectId: string, price: number) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+
+  try {
+    const data = await prisma.bids.findUnique({
+      where: {
+        investorId_projectId: {
+          investorId: user.id,
+          projectId: projectId,
+        },
+      },
+    });
+
+    if (!data) {
+      await prisma.bids.create({
+        data: {
+          price: price,
+          investorId: user.id,
+          projectId: projectId,
+        },
+      });
+    } else {
+      await prisma.bids.update({
+        where: {
+          investorId_projectId: {
+            investorId: user.id,
+            projectId: projectId,
+          },
+        },
+        data: {
+          price: price,
+        },
+      });
+    }
+
+    return { status: "success" };
+  } catch (error) {
+    console.log(error);
+    return { status: "failure" };
+  }
+}
+
+export async function confirmBid(projectId: string, investorId: string) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+
+  try {
+    await prisma.bids.update({
+      where: {
+        investorId_projectId: {
+          investorId: investorId,
+          projectId: projectId,
+        },
+      },
+      data: {
+        accept: true,
+      },
+    });
+
+    await prisma.project.update({
+      where: {
+        id: projectId,
+      },
+      data: {
+        sold: true
+      },
+    });
+
+    return { status: "success" };
+  } catch (error) {
+    console.log(error);
+    return { status: "failure" };
+  }
+}

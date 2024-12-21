@@ -13,14 +13,14 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { SubmitBid } from './ToasterSubmitBid'
 
-export function BidDialog({ projectTitle }: { projectTitle: string }) {
+export function BidDialog({ projectTitle, projectId }: { projectTitle: string; projectId: string }) {
   const [amount, setAmount] = useState('')
   const [open, setOpen] = useState(false)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Here you would typically send the bid to your backend
     console.log(`Bid of $${amount} submitted for ${projectTitle}`)
     setOpen(false)
   }
@@ -57,11 +57,11 @@ export function BidDialog({ projectTitle }: { projectTitle: string }) {
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit">Submit Bid</Button>
+            <SubmitBid price={Number(amount)} projectId={projectId}/>
+           
           </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
   )
 }
-

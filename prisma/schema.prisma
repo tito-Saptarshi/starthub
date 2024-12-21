@@ -36,6 +36,8 @@ model Innovator {
   user User @relation(fields: [id], references: [id])
 
   project Project[]
+
+  collab Collab[]
 }
 
 model Investor {
@@ -53,6 +55,8 @@ model Investor {
   investment Investment?
 
   hiringOption HiringOption[]
+
+  bids Bids[]
 }
 
 model Investment {
@@ -107,10 +111,22 @@ model InnovatorHiring {
 }
 
 model Collab {
-  id          String  @id @default(uuid())
+  id          String    @id @default(uuid())
   projectId   String
   innovatorId String
-  accept      Boolean @default(false)
+  accept      Boolean   @default(false)
+  innovator   Innovator @relation(fields: [innovatorId], references: [id])
 
   @@unique([innovatorId, projectId])
+}
+
+model Bids {
+  id         String   @id @default(uuid())
+  projectId  String
+  investorId String
+  price      Int
+  accept     Boolean  @default(false)
+  investor   Investor @relation(fields: [investorId], references: [id])
+
+  @@unique([investorId, projectId])
 }
