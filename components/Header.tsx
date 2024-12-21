@@ -23,7 +23,7 @@ export default async function Header() {
             <li>
               <Link
                 href="#"
-                className="text-gray-300 hover:text-blue-400 transition-colors mr-2"
+                className="text-gray-300 hover:text-blue-400 transition-colors mr-2 hidden"
               >
                 About
               </Link>
