@@ -55,11 +55,14 @@ export default async function ProjectDisplay({
   const projectData = await getData(params.id2);
   if (!projectData) return redirect("/");
 
+  let admin = false;
   const { getUser } = getKindeServerSession();
   const user = await getUser();
-  let admin = false;
-  if (user.id === projectData.Innovator?.id) {
-    admin = true;
+
+  if (user) {
+    if (user.id === projectData.Innovator?.id) {
+      admin = true;
+    }
   }
 
   const parsedContent = md.render(projectData?.details || "");
@@ -92,7 +95,10 @@ export default async function ProjectDisplay({
               <p className="text-2xl font-bold mt-2">
                 Price: ${projectData.price}
               </p>
-              <BidDialog projectTitle={projectData.name} projectId={projectData.id} />
+              <BidDialog
+                projectTitle={projectData.name}
+                projectId={projectData.id}
+              />
             </div>
           )}
 
@@ -102,13 +108,16 @@ export default async function ProjectDisplay({
               <p className="text-2xl font-bold mt-2">
                 Funding Goal: ${projectData.price}
               </p>
-              <BidDialog projectTitle={projectData.name} projectId={projectData.id}/>
+              <BidDialog
+                projectTitle={projectData.name}
+                projectId={projectData.id}
+              />
             </div>
           )}
 
           {projectData.project_type === "collab" && (
             <div>
-              <ToasterCollabCreate projectId={projectData.id} admin={admin}/>
+              <ToasterCollabCreate projectId={projectData.id} admin={admin} />
             </div>
           )}
 

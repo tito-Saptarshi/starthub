@@ -1,10 +1,11 @@
-"use client";
-
+import prisma from "@/app/lib/db";
 import { Button } from "@/components/ui/button";
+import { User } from "@/lib/types";
 import {
   LoginLink,
   RegisterLink,
 } from "@kinde-oss/kinde-auth-nextjs/components";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -12,9 +13,26 @@ interface Props {
   loggedIn: boolean;
 }
 
-export default function Hero({ loggedIn }: Props) {
+async function getData(id: string) {
+  return prisma.user.findUnique({
+    where: {
+      id,
+    }, include : {
+      Innovator: true,
+      Investor: true,
+    }
+  });
+}
+
+export default async function Hero({ loggedIn }: Props) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  let userData;
+  if (loggedIn) {
+    userData = await getData(user.id ?? "");
+  }
   return (
-    <section className="relative bg-gray-900 text-white py-32 overflow-hidden">
+    <section className="relative bg-gray-900 text-white pt-32 pb-12 overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
           src="/placeholder.svg?height=1080&width=1920"
@@ -35,14 +53,49 @@ export default function Hero({ loggedIn }: Props) {
         </p>
         <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
           {loggedIn ? (
-            <Button
-              variant={"outline"}
-              size="lg"
-              className="bg-blue-500 text-white hover:bg-blue-600 text-lg px-8 py-6"
-              asChild
-            >
-              <Link href={`/profile`}>Profile</Link>
-            </Button>
+            <div className="flex items-center ">
+              {userData?.isInnovator && (
+                <Button
+                  variant={"outline"}
+                  size="lg"
+                  className="bg-blue-500 text-white hover:bg-blue-600 text-lg px-4 py-3 mr-4"
+                  asChild
+                >
+                  <Link href={`/innovator/${userData.Innovator?.id}`}>Innovator Profile</Link>
+                </Button>
+              )}
+              
+              {userData?.isInvestor && (
+                <Button
+                  variant={"outline"}
+                  size="lg"
+                  className="bg-blue-500 text-white hover:bg-blue-600 text-lg px-4 py-3"
+                  asChild
+                >
+                  <Link href={`/investor/dashboard/hiring`}>Investor Profile</Link>
+                </Button>
+              )}
+              {!userData?.isInnovator && (
+                <Button
+                  variant={"outline"}
+                  size="lg"
+                  className="bg-blue-500 text-white hover:bg-blue-600 text-lg px-4 py-3"
+                  asChild
+                >
+                  <Link href={`/onboarding`}>Create Innovator Profile</Link>
+                </Button>
+              )}
+              {!userData?.isInvestor && (
+                <Button
+                  variant={"outline"}
+                  size="lg"
+                  className="bg-blue-500 text-white hover:bg-blue-600 text-lg px-4 py-3"
+                  asChild
+                >
+                  <Link href={`/onboarding`}>Create Investor Profile</Link>
+                </Button>
+              )}
+            </div>
           ) : (
             <>
               <Button
@@ -60,6 +113,11 @@ export default function Hero({ loggedIn }: Props) {
               </Button>
             </>
           )}
+        </div>
+        <div className="p-10">
+
+          <Link href={'/all-investor'} className="p-2 block hover:text-blue-600">All Investors and Hirings</Link>
+          <Link href={'/render-projects'} className="p-2 block hover:text-blue-600">All Projects and Innovations</Link>
         </div>
       </div>
     </section>

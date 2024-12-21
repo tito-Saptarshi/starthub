@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { LinkedinIcon,  UserIcon } from "lucide-react";
+import { LayoutDashboardIcon, LinkedinIcon,  UserIcon } from "lucide-react";
 
 import markdownit from "markdown-it";
 import Link from "next/link";
@@ -30,7 +30,7 @@ export function HeroInnovator({ user, admin }: { user: User; admin: boolean }) {
             {user.name}
           </h1>
           <p className="text-lg mt-4 text-gray-300 uppercase tracking-wider">
-            Data Analyst
+           {user.Innovator?.role}
           </p>
         </div>
       </div>
@@ -75,9 +75,14 @@ export function HeroInnovator({ user, admin }: { user: User; admin: boolean }) {
                     update profile
                   </p>
                 </Link>
+                <Link href={`/all-projects`}>
+                  <p className="flex text-sm text-muted-foreground hover:cursor-pointer hover:font-bold items-center justify-center">
+                    <LayoutDashboardIcon className="h-4 w-4 mx-1" />
+                    Dashboard
+                  </p>
+                </Link>
                 <Link href={`/profile/${user.id}/project/create`}>
                   <p className="flex text-sm text-muted-foreground hover:cursor-pointer hover:font-bold items-center justify-center">
-                    <UserIcon className="h-4 w-4 mx-1" />
                     Create Project
                   </p>
                 </Link>

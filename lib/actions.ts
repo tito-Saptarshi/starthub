@@ -39,6 +39,14 @@ export async function registerInvestor(
           },
         },
       });
+      await prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          isInvestor: true,
+        },
+      });
     } else {
       investor = await prisma.investor.update({
         where: {
@@ -429,7 +437,44 @@ export async function confirmBid(projectId: string, investorId: string) {
         id: projectId,
       },
       data: {
-        sold: true
+        sold: true,
+      },
+    });
+
+    return { status: "success" };
+  } catch (error) {
+    console.log(error);
+    return { status: "failure" };
+  }
+}
+
+export async function confirmCollab(projectId: string, innovatorId: string) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+
+  try {
+    await prisma.collab.update({
+      where: {
+        innovatorId_projectId: {
+          innovatorId: innovatorId,
+          projectId: projectId,
+        },
+      },
+      data: {
+        accept: true,
+      },
+    });
+
+    await prisma.project.update({
+      where: {
+        id: projectId,
+      },
+      data: {
+        sold: true,
       },
     });
 

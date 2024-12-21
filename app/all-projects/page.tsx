@@ -29,7 +29,7 @@ export default async function Home() {
       const projects = data?.Innovator?.project;
     
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto p-16">
       <h1 className="text-3xl font-bold mb-6">My Projects</h1>
       <ProjectList projects={projects} />
     </div>

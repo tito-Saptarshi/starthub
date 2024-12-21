@@ -1,4 +1,4 @@
-import InvestorCard from "@/components/investorComponents/InvestorCard"
+
 import prisma from "../lib/db"
 import InvestorCard2 from "@/components/investorComponents/InvestorCard";
 

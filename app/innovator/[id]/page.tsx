@@ -8,7 +8,7 @@ async function getData(id: string) {
   noStore();
   const data = await prisma.user.findUnique({
     where: {
-      id: id
+      id: id,
     },
     include: {
       Innovator: true, // Include the Innovator details
@@ -18,20 +18,21 @@ async function getData(id: string) {
   return data;
 }
 
-
-export default async function page({params} : {params : {id : string}}) {
+export default async function page({ params }: { params: { id: string } }) {
+  let admin = false;
   const user = await getData(params.id);
   const { getUser } = getKindeServerSession();
   const data = await getUser();
-  let admin = false;
-  if(data.id === user?.id) {
-    admin=true;
+  if (data) {
+    if (data.id === user?.id) {
+      admin = true;
+    }
   }
   return (
-  <div className="p-4">
-    <HeroInnovator user={user || ""} admin={admin}/>  
-    {/* <PersonalProjects username={params.id}/> */}
-     <PersonalProjects userId={params.id}/>
-  </div>
+    <div className="p-4">
+      <HeroInnovator user={user || ""} admin={admin} />
+      {/* <PersonalProjects username={params.id}/> */}
+      <PersonalProjects userId={params.id} />
+    </div>
   );
 }

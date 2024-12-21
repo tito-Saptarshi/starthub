@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 
-export default function OnboardingForm() {
+export default function OnboardingForm({innovator, investor} : {innovator: boolean; investor: boolean}) {
   const [userType, setUserType] = useState<string | null>(null)
   const router = useRouter()
 
@@ -33,14 +33,14 @@ export default function OnboardingForm() {
             onValueChange={setUserType}
             className="flex flex-col space-y-4 mb-4"
           >
-            <div className="flex items-center space-x-2">
+            {!investor && <div className="flex items-center space-x-2">
               <RadioGroupItem value="investor" id="investor" />
               <Label htmlFor="investor">Investor</Label>
-            </div>
-            <div className="flex items-center space-x-2">
+            </div>}
+            {!innovator && <div className="flex items-center space-x-2">
               <RadioGroupItem value="innovator" id="innovator" />
               <Label htmlFor="innovator">Innovator</Label>
-            </div>
+            </div>}
           </RadioGroup>
           <Button type="submit" className="w-full" disabled={!userType}>
             Continue

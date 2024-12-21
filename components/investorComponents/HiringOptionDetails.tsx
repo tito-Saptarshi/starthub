@@ -12,6 +12,7 @@ interface HiringOptionDetailsProps {
 export default async function HiringOptionDetails({ hiringOption,investorId }: HiringOptionDetailsProps) {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
+  
   return (
     <div className="bg-green-50 p-4 rounded-md mb-2">
       <h4 className="font-semibold">{hiringOption.title}</h4>
@@ -24,7 +25,7 @@ export default async function HiringOptionDetails({ hiringOption,investorId }: H
       )}
       <p className='mt-2'>Status: {hiringOption.accept ? ("Not available"):("available")}</p>
       {/* <Button className='mt-3' variant={'outline'}>Connect</Button> */}
-      {!hiringOption.accept && <ToastSimple investorId={investorId} innovatorId={user.id} projectId={hiringOption.id}/>}
+      {!hiringOption.accept && user && <ToastSimple investorId={investorId} innovatorId={user.id} projectId={hiringOption.id}/>}
     </div>
   )
 }

@@ -115,6 +115,7 @@ model Collab {
   projectId   String
   innovatorId String
   accept      Boolean   @default(false)
+  
   innovator   Innovator @relation(fields: [innovatorId], references: [id])
 
   @@unique([innovatorId, projectId])
