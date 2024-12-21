@@ -17,14 +17,14 @@ import { redirect } from "next/navigation";
 export default async function InvestorRegistrationPage() {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
-  if(!user) redirect("/")
+  // if(!user) redirect("/")
   // const userData = getData(user.id);
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6 text-center">
         Investor Registration
       </h1>
-      <InvestorRegistrationForm userId={user.id} />
+      <InvestorRegistrationForm userId={user?.id || ""} />
     </div>
   );
 }

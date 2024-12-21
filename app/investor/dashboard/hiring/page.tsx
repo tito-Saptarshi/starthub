@@ -29,8 +29,8 @@ async function getData(id: string) {
 export default async function page() {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
-  if(!user) redirect('/');
-  const data = await getData(user.id);
+  // if(!user) redirect('/');
+  const data = await getData(user?.id ?? "");
   console.log("new data " + data?.hiringOption[0].title);
 
   return (
