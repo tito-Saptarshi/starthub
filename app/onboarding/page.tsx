@@ -1,6 +1,7 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import OnboardingForm from "./OnboardingForm";
 import prisma from "../lib/db";
+import { redirect } from "next/navigation";
 
 async function getData (id: string) {
  return prisma.user.findUnique({
@@ -12,6 +13,7 @@ async function getData (id: string) {
 export default async function OnboardingPage() {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
+  if(!user) return redirect('/');
   const data = await getData(user.id);
   const investor = data?.isInvestor;
   const innovator = data?.isInnovator;
