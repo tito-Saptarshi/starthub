@@ -13,7 +13,7 @@ async function getData (id: string) {
  })
 }
 export default async function OnboardingPage() {
-  const { getUser } = getKindeServerSession();
+  const { getUser } = await  getKindeServerSession();
   const user = await getUser();
 
   if(!user) return redirect('/');
