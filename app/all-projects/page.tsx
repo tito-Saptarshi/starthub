@@ -21,9 +21,9 @@ export default async function Home() {
       const { getUser } = getKindeServerSession();
       const user = await getUser();
     
-      // if (!user) {
-      //   return redirect("/api/auth/login");
-      // }
+      if (!user) {
+        return redirect("/api/auth/login");
+      }
 
       const data = await getData(user?.id ?? "");
       const projects = data?.Innovator?.project;
