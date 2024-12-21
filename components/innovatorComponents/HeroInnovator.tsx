@@ -69,7 +69,7 @@ export function HeroInnovator({ user, admin }: { user: User; admin: boolean }) {
             </p>
             {admin && (
               <div>
-                <Link href={`/profile/${user.id}/update`}>
+                <Link href={`/innovator/registration`}>
                   <p className="flex text-sm text-muted-foreground hover:cursor-pointer hover:font-bold items-center justify-center">
                     <UserIcon className="h-4 w-4 mx-1" />
                     update profile
@@ -81,7 +81,7 @@ export function HeroInnovator({ user, admin }: { user: User; admin: boolean }) {
                     Dashboard
                   </p>
                 </Link>
-                <Link href={`/profile/${user.id}/project/create`}>
+                <Link href={`/innovator/${user.id}/project/create`}>
                   <p className="flex text-sm text-muted-foreground hover:cursor-pointer hover:font-bold items-center justify-center">
                     Create Project
                   </p>

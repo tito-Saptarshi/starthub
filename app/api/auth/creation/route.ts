@@ -30,13 +30,13 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(
       process.env.NODE_ENV === "development"
         ? "http://localhost:3000/onboarding"
-        : "https://your-production-domain.com/onboarding"
+        : "https://starthub-kappa.vercel.app/onboarding"
     );
   }
 
   return NextResponse.redirect(
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000/"
-      : "https://your-production-domain.com/onboarding"
+      : "https://starthub-kappa.vercel.app/"
   );
 }
