@@ -2,6 +2,7 @@ import prisma from "@/app/lib/db";
 import JobCard from "@/components/investorComponents/JobCard";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 // const jobRoles = [
 //   { id: 1, title: "Frontend Developer", applicants: 15 },
@@ -28,7 +29,7 @@ async function getData(id: string) {
 export default async function page() {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
-
+  if(!user) redirect('/');
   const data = await getData(user.id);
   console.log("new data " + data?.hiringOption[0].title);
 

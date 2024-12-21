@@ -79,7 +79,7 @@ export default async function Hero({ loggedIn }: Props) {
                 <Button
                   variant={"outline"}
                   size="lg"
-                  className="bg-blue-500 text-white hover:bg-blue-600 text-lg px-4 py-3"
+                  className="bg-blue-500 text-white hover:bg-blue-600 text-lg ml-2 px-4 py-3"
                   asChild
                 >
                   <Link href={`/onboarding`}>Create Innovator Profile</Link>
