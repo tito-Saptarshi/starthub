@@ -3,7 +3,9 @@ import OnboardingForm from "./OnboardingForm";
 import prisma from "../lib/db";
 import { redirect } from "next/navigation";
 
+import { unstable_noStore as noStore } from "next/cache";
 async function getData (id: string) {
+  noStore();
  return prisma.user.findUnique({
   where : {
     id
@@ -13,7 +15,9 @@ async function getData (id: string) {
 export default async function OnboardingPage() {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
+
   if(!user) return redirect('/');
+
   const data = await getData(user.id);
   const investor = data?.isInvestor;
   const innovator = data?.isInnovator;
