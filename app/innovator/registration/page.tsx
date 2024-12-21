@@ -22,7 +22,7 @@ export default async function page() {
   const { getUser } = getKindeServerSession();
   const currUser = await getUser();
   // if (!currUser) redirect(`/`);
-  const user = await getData(currUser.id ?? "");
+  const user = await getData(currUser?.id ?? "");
   
 
   //   if (currUser.id !== user?.id) {

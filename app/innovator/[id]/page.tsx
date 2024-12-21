@@ -24,7 +24,7 @@ export default async function page({ params }: { params: { id: string } }) {
   const { getUser } = getKindeServerSession();
   const data = await getUser();
   if (data) {
-    if (data.id === user?.id) {
+    if (data?.id === user?.id) {
       admin = true;
     }
   }

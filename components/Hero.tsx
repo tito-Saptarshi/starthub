@@ -29,7 +29,7 @@ export default async function Hero({ loggedIn }: Props) {
   const user = await getUser();
   let userData;
   if (loggedIn) {
-    userData = await getData(user.id ?? "");
+    userData = await getData(user?.id ?? "");
   }
   return (
     <section className="relative bg-gray-900 text-white pt-32 pb-12 overflow-hidden">

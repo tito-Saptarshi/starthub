@@ -60,7 +60,7 @@ export default async function ProjectDisplay({
   const user = await getUser();
 
   if (user) {
-    if (user.id === projectData.Innovator?.id) {
+    if (user?.id === projectData.Innovator?.id) {
       admin = true;
     }
   }

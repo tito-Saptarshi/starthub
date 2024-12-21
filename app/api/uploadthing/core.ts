@@ -10,7 +10,7 @@ export const ourFileRouter = {
       const { getUser } = getKindeServerSession();
       const user = await getUser();
 
-      if (!user) throw new UploadThingError("Unauthorized");
+      // if (!user) throw new UploadThingError("Unauthorized");
 
       return { userId: user.id };
     })

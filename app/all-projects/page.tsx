@@ -25,7 +25,7 @@ export default async function Home() {
       //   return redirect("/api/auth/login");
       // }
 
-      const data = await getData(user.id ?? "");
+      const data = await getData(user?.id ?? "");
       const projects = data?.Innovator?.project;
     
   return (
